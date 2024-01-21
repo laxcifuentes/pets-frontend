@@ -24,7 +24,7 @@ function Home() {
     })
     return (
         <div>
-            Pet Adoption
+            {display}
         </div>
     )
 }

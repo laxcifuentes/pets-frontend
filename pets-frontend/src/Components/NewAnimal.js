@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function NewAnimal() {
     const INITIAL_STATE = {
@@ -8,6 +9,8 @@ function NewAnimal() {
         description: '',
         profilePicture: ''
     }
+
+    const navigate = useNavigate()
 
     const [animal, setAnimal] = useState(INITIAL_STATE)
 
@@ -20,8 +23,21 @@ function NewAnimal() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(animal)
+        animal.age = Number(animal.age)
+
+        const url = `${process.env.REACT_APP_BACKEND_URL}/animals`
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                 'content-type': 'application/json'
+            },
+            body: JSON.stringify(animal)
+        })
+
+        if (response.status !== 201) console.log('ERROR:') // add error handling here
+        navigate('/')
     }
+
     return (
         <div>
             <form onSubmit={handleSubmit}>
